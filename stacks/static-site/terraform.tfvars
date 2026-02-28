@@ -5,14 +5,10 @@ force_destroy          = false
 public_access_block    = false
 website_index_document = "index.html"
 website_error_document = "error.html"
+
 tags = {
   Environment = "dev"
   Project     = "static-site"
   Owner       = "Mohamed B."
 }
 
-variable "aws_region" {
-  description = "AWS Region"
-  type        = string
-  default     = "us-east-1"
-}
