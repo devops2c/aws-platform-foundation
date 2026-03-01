@@ -1,6 +1,7 @@
 resource "aws_s3_bucket" "this" {
   bucket        = var.bucket_name
-  force_destroy = var.force_destroy
+ # force_destroy = var.force_destroy
+  force_destroy = true # Permet de supprimer le bucket même s'il contient des objets (à utiliser avec précaution)
 
   tags = var.tags
 }
