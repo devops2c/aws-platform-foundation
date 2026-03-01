@@ -4,77 +4,112 @@ on:
   push:
     branches:
       - main
+  pull_request:
+    branches:
+      - main
   workflow_dispatch:
 
 jobs:
   terraform-plan:
-    name: Terraform Plan
+    name: 'Terraform Plan'
     runs-on: ubuntu-latest
-    timeout-minutes: 10
-
+    
+    defaults:
+      run:
+        working-directory: stacks/static-site
+    
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
+      - name: Checkout
+        uses: actions/checkout@v4
+      
       - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v2
+        uses: hashicorp/setup-terraform@v3
         with:
-          terraform_version: 1.0.0
-
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v2
+          terraform_version: 1.5.0
+      
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
-
+      
       - name: Terraform Init
         run: terraform init
-        working-directory: stacks/static-site
-
+      
+      - name: Terraform Format
+        run: terraform fmt -check
+        continue-on-error: true
+      
+      - name: Terraform Validate
+        run: terraform validate
+      
       - name: Terraform Plan
         run: terraform plan -out=tfplan
-        working-directory: stacks/static-site
-
-      - name: Upload Plan
-        uses: actions/upload-artifact@v4
-        with:
-          name: tfplan
-          path: stacks/static-site/tfplan
 
   terraform-apply:
-    name: Terraform Apply (Manual)
+    name: 'Terraform Apply'
     runs-on: ubuntu-latest
-    timeout-minutes: 15
     needs: terraform-plan
-    if: github.event_name == 'workflow_dispatch'  # ← Lance SEULEMENT en manuel
-
+    if: github.event_name == 'workflow_dispatch'
+    
+    defaults:
+      run:
+        working-directory: stacks/static-site
+    
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
+      - name: Checkout
+        uses: actions/checkout@v4
+      
       - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v2
+        uses: hashicorp/setup-terraform@v3
         with:
-          terraform_version: 1.0.0
-
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v2
+          terraform_version: 1.5.0
+      
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
-
-      - name: Download Plan
-        uses: actions/download-artifact@v4
-        with:
-          name: tfplan
-          path: stacks/static-site
-
+      
       - name: Terraform Init
         run: terraform init
-        working-directory: stacks/static-site
-
+      
+      - name: Terraform Plan
+        run: terraform plan -out=tfplan
+      
       - name: Terraform Apply
         run: terraform apply tfplan
+
+# job destory
+  terraform-destroy:
+    name: 'Terraform Destroy'
+    runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch'
+    
+    defaults:
+      run:
         working-directory: stacks/static-site
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.5.0
+      
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+      
+      - name: Terraform Init
+        run: terraform init
+      
+      - name: Terraform Destroy
+        run: terraform destroy -auto-approve
