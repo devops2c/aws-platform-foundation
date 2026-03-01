@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mohamed Belhedi - DevOps Engineer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html, body {
+            height: 100%;
+            overflow: hidden;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #0066cc 0%, #004c99 100%);
+            color: #ffffff;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 24px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding-top: 80px;
+            padding-bottom: 140px;
+        }
+        
+        header {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 24px 0;
+            background: rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(8px);
+            z-index: 100;
+        }
+        
+        nav {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 28px;
+            font-weight: 700;
+            color: white;
+            letter-spacing: -0.5px;
+        }
+        
+        .nav-title {
+            color: rgba(255, 255, 255, 0.8);
+            font-weight: 500;
+            font-size: 14px;
+        }
+        
+        .particles {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1;
+        }
+        
+        .particle {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: rgba(255, 255, 255, 0.4);
+            border-radius: 50%;
+            animation: float 20s infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0) translateX(0); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100vh) translateX(50px); opacity: 0; }
+        }
+        
+        main {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+        }
+        
+        .hero-content h1 {
+            font-size: clamp(42px, 6vw, 72px);
+            margin-bottom: 16px;
+            font-weight: 700;
+            letter-spacing: -1px;
+        }
+        
+        .hero-content p {
+            font-size: clamp(16px, 2vw, 22px);
+            margin-bottom: 32px;
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        .cta-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 28px;
+            background: white;
+            color: #0066cc;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            margin-bottom: 40px;
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+        }
+        
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 18px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        
+        .tech-card {
+            background: rgba(255, 255, 255, 0.12);
+            padding: 28px 20px;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            transition: all 0.3s ease;
+        }
+        
+        .tech-card:hover {
+            transform: translateY(-4px);
+            background: rgba(255, 255, 255, 0.18);
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+        
+        .tech-icon {
+            font-size: 44px;
+            margin-bottom: 12px;
+        }
+        
+        .tech-card h3 {
+            font-size: 18px;
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
+        
+        .tech-card p {
+            color: rgba(255, 255, 255, 0.85);
+            font-size: 13px;
+        }
+        
+        footer {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 20px 0;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(8px);
+        }
+        
+        footer p {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 13px;
+            margin-bottom: 6px;
+        }
+        
+        .signature {
+            font-family: 'Brush Script MT', cursive;
+            font-size: 28px;
+            color: white;
+        }
+
+        @media (max-width: 1200px) {
+            .tech-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .tech-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="particles">
+        <div class="particle" style="left: 10%; animation-delay: 0s;"></div>
+        <div class="particle" style="left: 20%; animation-delay: 3s;"></div>
+        <div class="particle" style="left: 30%; animation-delay: 6s;"></div>
+        <div class="particle" style="left: 40%; animation-delay: 2s;"></div>
+        <div class="particle" style="left: 50%; animation-delay: 5s;"></div>
+        <div class="particle" style="left: 60%; animation-delay: 8s;"></div>
+        <div class="particle" style="left: 70%; animation-delay: 4s;"></div>
+        <div class="particle" style="left: 80%; animation-delay: 7s;"></div>
+        <div class="particle" style="left: 90%; animation-delay: 1s;"></div>
+    </div>
+
+    <header>
+        <nav>
+            <div class="logo">MB</div>
+            <div class="nav-title">DevOps Engineer</div>
+        </nav>
+    </header>
+
+    <main>
+        <div class="container">
+            <div class="hero-content">
+                <p>DevOps Engineer | Cloud Architecture | Infrastructure as Code</p>
+                <a href="https://www.linkedin.com/in/mohamed-™-17986b94/" target="_blank" class="cta-button">
+                    <span>🔗</span>LinkedIn
+                </a>
+            </div>
+
+            <div class="tech-grid">
+                <div class="tech-card">
+                    <div class="tech-icon">🏗️</div>
+                    <h3>Architecture</h3>
+                </div>
+                <div class="tech-card">
+                    <div class="tech-icon">☁️</div>
+                    <h3>AWS</h3>
+                </div>
+                <div class="tech-card">
+                    <div class="tech-icon">🔧</div>
+                    <h3>Terraform</h3>
+                </div>
+                <div class="tech-card">
+                    <div class="tech-icon">🐳</div>
+                    <h3>Docker</h3>
+                </div>
+                <div class="tech-card">
+                    <div class="tech-icon">⚙️</div>
+                    <h3>CI/CD</h3>
+                    <p>GitHub Actions</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Mohamed Belhedi | Deployed with Terraform on AWS S3</p>
+        <div class="signature">Mohamed B.</div>
+    </footer>
+</body>
+</html>
