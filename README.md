@@ -200,7 +200,37 @@ aws s3api put-public-access-block \
 ###Détruire l'infrastructure
 cd stacks/static-site
 terraform destroy
-note ! en cours de l'automatiser.
+### 🔴 Détruire l'infrastructure
+
+#### **Option 1 : Via GitHub Actions (Recommandé)**
+
+1. Va sur **GitHub** → **Actions**
+2. Clique sur **"Terraform Destroy"** (dans la liste à gauche)
+3. Clique sur **"Run workflow"**
+4. Sélectionne la branche **main**
+5. Clique sur **"Run workflow"**
+
+Le workflow va automatiquement :
+- Se connecter au backend S3
+- Initialiser Terraform
+- Vider et détruire le bucket S3 (grâce à `force_destroy = true`)
+- Mettre à jour le state S3
+
+---
+
+#### **Option 2 : En local**
+
+```bash
+# Se placer dans le répertoire du stack
+cd stacks/static-site
+
+# Initialiser Terraform 
+terraform init
+
+# Détruire l'infrastructure
+terraform destroy
+
+# Confirmer avec 'yes'
 
 ###Supprimer le bucket de state
 aws s3 rb s3://terraform-state-mohamed-2025 --force
