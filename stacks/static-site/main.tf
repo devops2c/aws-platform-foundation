@@ -1,6 +1,6 @@
 module "s3_static_site" {
   source = "../../modules/storage/s3-static-site"
-
+#syntaxe var.bucket_name cad ==> Source de la valeur : fichier terraform.tfvars local du stack (ou via CLI -var)
   bucket_name             = var.bucket_name
   enable_versioning       = var.enable_versioning
   enable_encryption       = var.enable_encryption

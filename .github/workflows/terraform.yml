@@ -43,11 +43,11 @@ jobs:
           path: stacks/static-site/tfplan
 
   terraform-apply:
-    name: Terraform Apply
+    name: Terraform Apply (Manual)
     runs-on: ubuntu-latest
     timeout-minutes: 15
     needs: terraform-plan
-    environment: production
+    if: github.event_name == 'workflow_dispatch'  # ← Lance SEULEMENT en manuel
 
     steps:
       - name: Checkout code
