@@ -1,6 +1,3 @@
-# aws-platform-foundation
-Modular AWS platform foundation built with Terraform. Progressive evolution from simple workloads to enterprise-grade architecture.
-
 # AWS Platform Foundation
 
 Infrastructure as Code pour AWS utilisant Terraform, avec déploiement automatisé via GitHub Actions.
@@ -52,12 +49,12 @@ GitHub Actions → Terraform → AWS S3 → Site Web Statique
 ```bash
 aws iam create-user --user-name terraform-user
 
-2. Attacher les permissions
+###2. Attacher les permissions
 aws iam attach-user-policy \
   --user-name terraform-user \
   --policy-arn arn:aws:iam::aws:policy/AdministratorAccess
 
-  3. Créer les clés d'accès
+###3. Créer les clés d'accès
 aws iam create-access-key --user-name terraform-user
 
 ⚠️ Sauvegarde les clés :
@@ -71,21 +68,21 @@ AWS Secret Access Key: ...
 Default region: us-east-1
 Default output format: json
 
-5. Vérifier la connexion
+###5. Vérifier la connexion
 aws sts get-caller-identity
 
-🗄️ Backend Terraform
+### Backend Terraform
 Création du bucket S3 pour le state
 aws s3api create-bucket \
   --bucket terraform-state-mohamed-2025 \
   --region us-east-1
 
-  Activer le versioning
+###Activer le versioning
 aws s3api put-bucket-versioning \
   --bucket terraform-state-mohamed-2025 \
   --versioning-configuration Status=Enabled
 
-  Activer le chiffrement
+###Activer le chiffrement
 aws s3api put-bucket-encryption \
   --bucket terraform-state-mohamed-2025 \
   --server-side-encryption-configuration '{
@@ -96,8 +93,8 @@ aws s3api put-bucket-encryption \
     }]
   }'
 
-Configuration du backend dans Terraform
-Fichier : backend.tf
+###Configuration du backend dans Terraform
+###Fichier : backend.tf
 terraform {
   backend "s3" {
     bucket  = "terraform-state-mohamed-2025"
@@ -107,7 +104,7 @@ terraform {
   }
 }
 
-📁 Structure du projet
+###📁 Structure du projet
 aws-platform-foundation/
 ├── .github/
 │   └── workflows/
@@ -128,7 +125,7 @@ aws-platform-foundation/
 │           └── index.html         # Site web
 └── README.md
 
-🚀 Déploiement
+###🚀 Déploiement
 1. Initialiser Terraform
 cd stacks/static-site
 terraform init
@@ -148,13 +145,13 @@ aws s3 cp stacks/static-site/website/index.html \
   s3://mystaticwebsite2036/ \
   --content-type "text/html; charset=utf-8"
 
-Vérifier le contenu
+###Vérifier le contenu
 aws s3 ls s3://mystaticwebsite2036/
 
-Accéder au site
+###Accéder au site
 http://mystaticwebsite2036.s3-website-us-east-1.amazonaws.com
 
-🔄 CI/CD avec GitHub Actions
+###🔄 CI/CD avec GitHub Actions
 Configuration des secrets GitHub
 GitHub → Settings → Secrets and variables → Actions
 Ajouter les secrets :
@@ -163,7 +160,7 @@ AWS_SECRET_ACCESS_KEY : Clé secrète AWS
 Workflow automatique
 Fichier : terraform.yml
 
-Déclencheurs :
+###Déclencheurs :
 ✅ Push sur main → Terraform Plan automatique
 ✅ Workflow manuel → Terraform Apply
 Jobs :
@@ -177,21 +174,21 @@ Run workflow ✅
 Voir l'état actuel
 terraform state list
 
-Voir les détails d'une ressource
+###Voir les détails d'une ressource
 terraform state show aws_s3_bucket.website
 
-Télécharger le state depuis S3
+###Télécharger le state depuis S3
 aws s3 cp s3://terraform-state-mohamed-2025/static-site/terraform.tfstate .
 
-🛡️ Sécurité
-Bonnes pratiques appliquées :
+###🛡️ Sécurité
+Bonnes pratiques à appliquées :
 ✅ Chiffrement : State et bucket chiffrés avec AES256
 ✅ Versioning : Historique des states activé
 ✅ IAM : Utilisateur dédié avec permissions minimales
 ✅ Secrets : Clés AWS stockées dans GitHub Secrets
 ✅ Backend distant : State centralisé sur S3
 
-Bloquer l'accès public au bucket de state
+Pour Bloquer l'accès public au bucket de state
 aws s3api put-public-access-block \
   --bucket terraform-state-mohamed-2025 \
   --public-access-block-configuration \
@@ -199,16 +196,16 @@ aws s3api put-public-access-block \
 
  note ! : non appliqué pour ce projet. 
 
- 🧹 Nettoyage
-Détruire l'infrastructure
+###🧹 Nettoyage
+###Détruire l'infrastructure
 cd stacks/static-site
 terraform destroy
 note ! en cours de l'automatiser.
 
-Supprimer le bucket de state
+###Supprimer le bucket de state
 aws s3 rb s3://terraform-state-mohamed-2025 --force
 
-📝 Commandes utiles
+###📝 Commandes utiles
 terraform init              # Initialiser
 terraform plan              # Planifier
 terraform apply             # Appliquer
@@ -216,21 +213,21 @@ terraform destroy           # Détruire
 terraform output            # Afficher les outputs
 terraform state list        # Lister les ressources
 
-AWS CLI
+###AWS CLI
 aws s3 ls                   # Lister les buckets
 aws s3 cp <src> <dest>      # Copier un fichier
 aws sts get-caller-identity # Vérifier l'identité
 
-👤 Auteur
+###👤 Auteur
 Mohamed Belhedi
 DevOps Engineer | Cloud Architecture | Infrastructure as Code
 
-🔗 LinkedIn
+🔗 LinkedIn https://www.linkedin.com/in/mohamed-%E2%84%A2-17986b94/
 
-📄 Licence
+###📄 Licence
 Ce projet est sous licence MIT.
 
-🆘 Problèmes courants
+###🆘 Problèmes courants
 Error: Access Denied
 ➡️ Vérifier les permissions IAM et les clés AWS
 
