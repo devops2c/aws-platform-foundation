@@ -237,16 +237,18 @@ aws s3 rb s3://terraform-state-mohamed-2025 --force
 
 ###📝 Commandes utiles
 terraform init              # Initialiser
-terraform plan              # Planifier
-terraform apply             # Appliquer
-terraform destroy           # Détruire
+terraform plan              # Planifier les changements
+terraform apply             # Appliquer les changements
+terraform destroy           # Détruire l'infrastructure
 terraform output            # Afficher les outputs
 terraform state list        # Lister les ressources
+terraform state show <resource>  # Détails d'une ressource
 
 ###AWS CLI
-aws s3 ls                   # Lister les buckets
+aws s3 ls                   # Lister les buckets S3
 aws s3 cp <src> <dest>      # Copier un fichier
-aws sts get-caller-identity # Vérifier l'identité
+aws sts get-caller-identity # Vérifier l'identité AWS
+aws s3 rb s3://<bucket> --force  # Supprimer un bucket
 
 ###👤 Auteur
 Mohamed Belhedi
