@@ -256,19 +256,30 @@ DevOps Engineer | Cloud Architecture | Infrastructure as Code
 
 🔗 LinkedIn https://www.linkedin.com/in/mohamed-%E2%84%A2-17986b94/
 
-###📄 Licence
+###📄Licence
 Ce projet est sous licence MIT.
 
-###🆘 Problèmes courants
-Error: Access Denied
-➡️ Vérifier les permissions IAM et les clés AWS
+```markdown
+---
 
-Error: Bucket already exists
-➡️ Le nom du bucket doit être unique globalement
+## 🆘 Problèmes courants
 
-Workflow failed
-➡️ Vérifier les secrets GitHub (AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
+### ❌ Error: Access Denied
+➡️ Vérifier les permissions IAM et la validité des clés AWS
 
-State locked
+### ❌ Error: Bucket already exists
+➡️ Le nom du bucket S3 doit être **unique globalement**. Modifier la variable `bucket_name`.
+
+### ❌ Error: Backend initialization failed
+➡️ Vérifier que le bucket de state existe et que les permissions sont correctes.
+
+### ❌ Error: Resource already managed by Terraform
+➡️ Utiliser `terraform import` pour importer la ressource existante dans le state.
+
+### ❌ Workflow failed
+➡️ Vérifier les secrets GitHub : `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`
+
+### ❌ State locked
 ➡️ Attendre la fin du job précédent ou forcer l'unlock :
+```bash
 terraform force-unlock <LOCK_ID>
