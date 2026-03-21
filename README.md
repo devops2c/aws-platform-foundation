@@ -268,7 +268,6 @@ DevOps Engineer | Cloud Architecture | Infrastructure as Code
 🔗 LinkedIn
 
 ## 📄 Licence
-
 Ce projet est sous licence MIT.
 
 🆘 Problèmes courants
@@ -290,3 +289,71 @@ Ce projet est sous licence MIT.
 ❌ State locked
 ➡️ Attendre la fin du job précédent ou forcer l'unlock :
 terraform force-unlock <LOCK_ID>
+
+21-03-2026 :  
+## 🔐 Sécurité : Authentification OIDC
+1. GitHub Actions démarre un workflow
+2. Demande un token OpenID Connect à GitHub
+3. Envoie le token à AWS STS (Security Token Service)
+4. AWS vérifie :
+   - Le token provient-il de GitHub ?
+   - Le repository correspond-il (devops2c/aws-platform-foundation) ?
+   - Le rôle autorise-t-il ce repository ?
+5. Si validé → AWS génère des credentials temporaires (1h max)
+6. GitHub Actions utilise ces credentials pour exécuter Terraform
+7. Les credentials expirent automatiquement après 1h
+
+### 🎯 Migration vers OIDC (OpenID Connect)
+
+Ce projet utilise **OIDC** pour l'authentification AWS au lieu de clés statiques.
+
+**Avantages :**
+- ✅ Aucune clé AWS stockée dans GitHub Secrets
+- ✅ Tokens temporaires (expiration automatique après 1h)
+- ✅ Principe du moindre privilège (permissions limitées)
+- ✅ Audit trail complet (traçabilité des accès)
+
+---
+
+### 📋 Infrastructure OIDC
+
+**Stack dédié :** `stacks/iam-github-oidc/`
+
+**Fichiers de configuration :**
+
+| Fichier | Rôle |
+|---------|------|
+| `backend.tf` | Configuration du state S3 (séparé du stack static-site) |
+| `providers.tf` | Configuration du provider AWS (région us-east-1) |
+| `variables.tf` | Définition des variables (github_org, github_repo, permissions) |
+| `main.tf` | Création de l'OIDC Provider + IAM Role + Policy |
+| `outputs.tf` | Export de l'ARN du rôle (nécessaire pour les workflows) |
+
+**Ressources AWS créées :**
+- **OIDC Provider** (`aws_iam_openid_connect_provider`) : Permet à AWS de faire confiance à GitHub Actions
+- **IAM Role** (`GitHubActionsRole`) : Rôle assumé par GitHub Actions
+- **IAM Policy** (inline) : Permissions limitées (S3 + IAM minimal)
+
+---
+
+### 🛡️ Principe du moindre privilège appliqué
+
+**❌ Mauvaise pratique évitée :**
+
+On **n'a PAS** utilisé `AdministratorAccess` (trop permissif).
+
+**✅ Bonne pratique appliquée :**
+
+Permissions minimales définies dans `variables.tf` :
+
+```terraform
+variable "github_actions_permissions" {
+  description = "Permissions IAM minimales pour GitHub Actions"
+  type        = list(string)
+  default = [
+    "s3:*",                    # Gestion complète des buckets S3
+    "iam:GetRole",             # Lecture des rôles IAM
+    "iam:PassRole",            # Passage de rôle (requis par Terraform)
+    "sts:GetCallerIdentity"    # Vérification de l'identité AWS
+  ]
+}
