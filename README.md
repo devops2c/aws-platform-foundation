@@ -341,19 +341,3 @@ Ce projet utilise **OIDC** pour l'authentification AWS au lieu de clés statique
 **❌ Mauvaise pratique évitée :**
 
 On **n'a PAS** utilisé `AdministratorAccess` (trop permissif).
-
-**✅ Bonne pratique appliquée :**
-
-Permissions minimales définies dans `variables.tf` :
-
-```terraform
-variable "github_actions_permissions" {
-  description = "Permissions IAM minimales pour GitHub Actions"
-  type        = list(string)
-  default = [
-    "s3:*",                    # Gestion complète des buckets S3
-    "iam:GetRole",             # Lecture des rôles IAM
-    "iam:PassRole",            # Passage de rôle (requis par Terraform)
-    "sts:GetCallerIdentity"    # Vérification de l'identité AWS
-  ]
-}
