@@ -7,7 +7,9 @@ jobs:
   terraform-destroy:
     name: 'Terraform Destroy'
     runs-on: ubuntu-latest
-    
+    permissions:
+      id-token: write   # ← Permet à GitHub de demander un token
+      contents: read    # ← Lecture du code
     defaults:
       run:
         working-directory: stacks/static-site
