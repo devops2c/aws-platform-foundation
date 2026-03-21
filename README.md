@@ -235,8 +235,9 @@ terraform destroy
 ###Supprimer le bucket de state
 aws s3 rb s3://terraform-state-mohamed-2025 --force
 
-###📝 Commandes utiles
-terraform init              # Initialiser
+### 🛠️ Commandes Terraform utiles
+
+```bash
 terraform plan              # Planifier les changements
 terraform apply             # Appliquer les changements
 terraform destroy           # Détruire l'infrastructure
@@ -244,42 +245,48 @@ terraform output            # Afficher les outputs
 terraform state list        # Lister les ressources
 terraform state show <resource>  # Détails d'une ressource
 
-###AWS CLI
+### 🛠️ Commandes Terraform utiles
+
+```bash
+terraform plan              # Planifier les changements
+terraform apply             # Appliquer les changements
+terraform destroy           # Détruire l'infrastructure
+terraform output            # Afficher les outputs
+terraform state list        # Lister les ressources
+terraform state show <resource>  # Détails d'une ressource
+
+🔧 Commandes AWS CLI utiles
 aws s3 ls                   # Lister les buckets S3
 aws s3 cp <src> <dest>      # Copier un fichier
 aws sts get-caller-identity # Vérifier l'identité AWS
 aws s3 rb s3://<bucket> --force  # Supprimer un bucket
 
-###👤 Auteur
+👤 Auteur
 Mohamed Belhedi
 DevOps Engineer | Cloud Architecture | Infrastructure as Code
 
-🔗 LinkedIn https://www.linkedin.com/in/mohamed-%E2%84%A2-17986b94/
+🔗 LinkedIn
 
-###📄Licence
+## 📄 Licence
+
 Ce projet est sous licence MIT.
 
-```markdown
----
-
-## 🆘 Problèmes courants
-
-### ❌ Error: Access Denied
+🆘 Problèmes courants
+❌ Error: Access Denied
 ➡️ Vérifier les permissions IAM et la validité des clés AWS
 
-### ❌ Error: Bucket already exists
-➡️ Le nom du bucket S3 doit être **unique globalement**. Modifier la variable `bucket_name`.
+❌ Error: Bucket already exists
+➡️ Le nom du bucket S3 doit être unique globalement. Modifier la variable bucket_name.
 
-### ❌ Error: Backend initialization failed
+❌ Error: Backend initialization failed
 ➡️ Vérifier que le bucket de state existe et que les permissions sont correctes.
 
-### ❌ Error: Resource already managed by Terraform
-➡️ Utiliser `terraform import` pour importer la ressource existante dans le state.
+❌ Error: Resource already managed by Terraform
+➡️ Utiliser terraform import pour importer la ressource existante dans le state.
 
-### ❌ Workflow failed
-➡️ Vérifier les secrets GitHub : `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`
+❌ Workflow failed
+➡️ Vérifier les secrets GitHub : AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY
 
-### ❌ State locked
+❌ State locked
 ➡️ Attendre la fin du job précédent ou forcer l'unlock :
-```bash
 terraform force-unlock <LOCK_ID>
